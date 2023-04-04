@@ -28,21 +28,24 @@ namespace uniserProject.Controllers
 
         public async Task<IActionResult> Index(int page = 1)
         {
+            ViewBag.Catigories = await _db.Categories.ToListAsync();
             ViewBag.Page = page;
             ViewBag.Pagecount = Math.Ceiling((decimal)_db.Products.Count() / 3);
-            List<Product> products = await _db.Products.OrderByDescending(x => x.Id).Skip((page - 1) * 3).Take(3).ToListAsync();
+            List<Product> products = await _db.Products.Include(x=>x.Category).OrderByDescending(x => x.Id).Skip((page - 1) * 3).Take(3).ToListAsync();
 
 
             return View(products);
         }
         public async Task<IActionResult> Create()
         {
+            ViewBag.Catigories = await _db.Categories.ToListAsync();
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Create(int? CatId,Product product)
         {
+            ViewBag.Catigories = await _db.Categories.ToListAsync();
             if (!ModelState.IsValid)
             {
                 return View();
@@ -82,7 +85,7 @@ namespace uniserProject.Controllers
             productdetail.Product = product;
             await _db.Products.AddAsync(product);
             await _db.ProductDetails.AddAsync(productdetail);
-
+            product.CategoryId = (int)CatId;
             await _db.SaveChangesAsync();
 
             return RedirectToAction("Index");
