@@ -111,6 +111,17 @@ namespace uniserProject.Controllers
 
             return View(product);
         }
+        public async Task<IActionResult> FilterforCategory(int? category)
+        {
+
+            List<Product> products = await _db.Products.Where(x => x.CategoryId==category).ToListAsync();
+            if (category == null)
+            {
+                List<Product> product1 = await _db.Products.OrderByDescending(x => x.Id).Take(3).ToListAsync();
+                return PartialView("_CategoryPartial", product1);
+            }
+            return PartialView("_CategoryPartial", products);
+        }
 
     }
    

@@ -27,6 +27,31 @@ $(document).ready(function () {
             }
         })
     });
+    $(document).on('change', '#category', function () {
+
+
+
+        $.ajax({
+            url: "/Home/FilterforCategory/ ",
+            type: "GET",
+            data: {
+                "category": $("#category").val()
+            },
+            success: function (response) {
+                if ($("#category").val().length > 0) {
+
+                    $("#MyProducts div").slice().remove()
+                    $("#MyProducts").append(response)
+                }
+                else {
+                    $("#MyProducts").empty(),
+                        $("#MyProducts").append(response)
+                };
+
+
+            }
+        })
+    });
 
 
 
