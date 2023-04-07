@@ -1,6 +1,7 @@
 ﻿using Final.Extentions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -28,16 +29,20 @@ namespace uniserProject.Controllers
 
         public async Task<IActionResult> Index(int page = 1)
         {
+            ViewBag.Year = await _db.Products.Select(x => x.Year).Distinct().ToListAsync(); ;
+            ViewBag.Marka = await _db.Marka.ToListAsync();
             ViewBag.Catigories = await _db.Categories.ToListAsync();
             ViewBag.Page = page;
-            ViewBag.Pagecount = Math.Ceiling((decimal)_db.Products.Count() / 3);
-            List<Product> products = await _db.Products.Include(x=>x.Category).OrderByDescending(x => x.Id).Skip((page - 1) * 3).Take(3).ToListAsync();
+            ViewBag.Pagecount = Math.Ceiling((decimal)_db.Products.Count() /10);
+            List<Product> products = await _db.Products.Include(x=>x.Category).Include(x=>x.Images).OrderByDescending(x => x.Id).Skip((page - 1) * 10).Take(10).ToListAsync();
 
 
             return View(products);
         }
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
+            ViewBag.Marka = await _db.Marka.ToListAsync();
             ViewBag.Catigories = await _db.Categories.ToListAsync();
             return View();
         }
@@ -45,32 +50,40 @@ namespace uniserProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int? CatId,Product product)
         {
+            ViewBag.Marka= await _db.Marka.ToListAsync();
             ViewBag.Catigories = await _db.Categories.ToListAsync();
-            if (!ModelState.IsValid)
+            List<ProductImage> productImages = new List<ProductImage>();
+            foreach (var Photo in product.Photo)
             {
-                return View();
-            }
-            if (product.Photo == null)
-            {
-                ModelState.AddModelError("Photo", "Zehmet olmasa sekil elave edin!");
-                return View();
-            }
-            if (!product.Photo.isImage())
-            {
-                ModelState.AddModelError("Photo", "Zehmet olmasa sekil elave et!");
-                return View();
+                var productimage = new ProductImage();
+                if (!ModelState.IsValid)
+                {
+                    return View();
+                }
+                if (product.Photo == null)
+                {
+                    ModelState.AddModelError("Photo", "Zehmet olmasa sekil elave edin!");
+                    return View();
+                }
+                if (!Photo.isImage())
+                {
+                    ModelState.AddModelError("Photo", "Zehmet olmasa sekil elave et!");
+                    return View();
 
+                }
+                if (Photo.isLower4mb())
+                {
+                    ModelState.AddModelError("Photo", "Zehmet olmasa 4mb kecmeyin!");
+                    return View();
+                }
+
+
+                string folder = Path.Combine(_env.WebRootPath, "img", "product");
+                productimage.ImageName = await Photo.savefileAsync(folder);
+                productimage.ProductId = product.Id;
+                productimage.Product=product;
+                productImages.Add(productimage);
             }
-            if (product.Photo.isLower4mb())
-            {
-                ModelState.AddModelError("Photo", "Zehmet olmasa 4mb kecmeyin!");
-                return View();
-            }
-
-
-            string folder = Path.Combine(_env.WebRootPath, "img", "product");
-            product.Image = await product.Photo.savefileAsync(folder);
-
 
             bool exist2 = _db.Products.Any(x => x.Name == product.Name);
             if (exist2)
@@ -86,17 +99,17 @@ namespace uniserProject.Controllers
             await _db.Products.AddAsync(product);
             await _db.ProductDetails.AddAsync(productdetail);
             product.CategoryId = (int)CatId;
+            product.Images = productImages;
             await _db.SaveChangesAsync();
-
             return RedirectToAction("Index");
         }
         public async Task<IActionResult> ProductSearch(string keyword)
         {
 
-            List<Product> products = await _db.Products.Where(x => x.Name.Contains(keyword)).ToListAsync();
+            List<Product> products = await _db.Products.Include(x => x.Images).Where(x => x.Name.Contains(keyword)).ToListAsync();
             if (keyword == null)
             {
-                List<Product> product1 = await _db.Products.OrderByDescending(x => x.Id).Take(3).ToListAsync();
+                List<Product> product1 = await _db.Products.Include(x => x.Images).OrderByDescending(x => x.Id).Take(10).ToListAsync();
                 return PartialView("_SearchProductPartial", product1);
             }
             return PartialView("_SearchProductPartial", products);
@@ -107,17 +120,17 @@ namespace uniserProject.Controllers
             {
                 return NotFound();
             }
-            Product product = await _db.Products.Include(x => x.ProductDetails).FirstOrDefaultAsync(x => x.Id == id);
+            Product product = await _db.Products.Include(x => x.ProductDetails).Include(x=>x.Images).FirstOrDefaultAsync(x => x.Id == id);
 
             return View(product);
         }
         public async Task<IActionResult> FilterforCategory(int? category)
         {
 
-            List<Product> products = await _db.Products.Where(x => x.CategoryId==category).ToListAsync();
+            List<Product> products = await _db.Products.Where(x => x.CategoryId==category).Include(x => x.Images).ToListAsync();
             if (category == null)
             {
-                List<Product> product1 = await _db.Products.OrderByDescending(x => x.Id).Take(3).ToListAsync();
+                List<Product> product1 = await _db.Products.OrderByDescending(x => x.Id).Include(x => x.Images).Take(10).ToListAsync();
                 return PartialView("_CategoryPartial", product1);
             }
             return PartialView("_CategoryPartial", products);

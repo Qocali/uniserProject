@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using uniserProject.DAL;
 
 namespace uniserProject.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230407150311_newdatabase")]
+    partial class newdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,21 +36,6 @@ namespace uniserProject.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("uniserProject.Models.Marka", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Marka");
-                });
-
             modelBuilder.Entity("uniserProject.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -61,9 +48,6 @@ namespace uniserProject.Migrations
 
                     b.Property<bool>("IsDeactive")
                         .HasColumnType("bit");
-
-                    b.Property<int>("MarkaId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -78,8 +62,6 @@ namespace uniserProject.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("MarkaId");
-
                     b.ToTable("Products");
                 });
 
@@ -90,14 +72,14 @@ namespace uniserProject.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
+                    b.Property<string>("Count")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeactive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<string>("Price")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -138,15 +120,7 @@ namespace uniserProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("uniserProject.Models.Marka", "Marka")
-                        .WithMany("Products")
-                        .HasForeignKey("MarkaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("Marka");
                 });
 
             modelBuilder.Entity("uniserProject.Models.ProductDetails", b =>
@@ -172,11 +146,6 @@ namespace uniserProject.Migrations
                 });
 
             modelBuilder.Entity("uniserProject.Models.Category", b =>
-                {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("uniserProject.Models.Marka", b =>
                 {
                     b.Navigation("Products");
                 });

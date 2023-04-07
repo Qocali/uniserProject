@@ -52,6 +52,82 @@ $(document).ready(function () {
             }
         })
     });
+    $(document).on('change', '#marka', function () {
+
+
+
+        $.ajax({
+            url: "/Home/FilterforCategory/ ",
+            type: "GET",
+            data: {
+                "category": $("#marka").val()
+            },
+            success: function (response) {
+                if ($("#marka").val().length > 0) {
+
+                    $("#MyProducts div").slice().remove()
+                    $("#MyProducts").append(response)
+                }
+                else {
+                    $("#MyProducts").empty(),
+                        $("#MyProducts").append(response)
+                };
+
+
+            }
+        })
+    });
+    $(document).on('click', '#button', function () {
+
+
+
+        $.ajax({
+            url: "/Category/FilterforPrice/ ",
+            type: "GET",
+            data: {
+                "maxprice": $("#Maxvalue").val(),
+                "minprace": $("#minvalue").val(),
+            },
+            success: function (response) {
+                if ($("#Maxvalue").val().length > 0) {
+
+                    $("#MyProducts div").slice().remove()
+                    $("#MyProducts").append(response)
+                }
+                else {
+                    $("#MyProducts").empty(),
+                        $("#MyProducts").append(response)
+                };
+
+
+            }
+        })
+    });
+    $(document).on('change', '#year', function () {
+
+
+
+        $.ajax({
+            url: "/Category/FilterforYear/ ",
+            type: "GET",
+            data: {
+                "year": $("#year").val()
+            },
+            success: function (response) {
+                if ($("#year").val().length > 0) {
+
+                    $("#MyProducts div").slice().remove()
+                    $("#MyProducts").append(response)
+                }
+                else {
+                    $("#MyProducts").empty(),
+                        $("#MyProducts").append(response)
+                };
+
+
+            }
+        })
+    });
 
 
 

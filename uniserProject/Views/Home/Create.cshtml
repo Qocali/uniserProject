@@ -3,13 +3,13 @@
 <form style="margin-top:80px;" method="post" enctype="multipart/form-data">
 
     <div class="form-group">
-        <label for="exampleInputEmail1">Photo</label>
-        <input asp-for="@Model.Photo" class="form-control" aria-descriedby="emailHelp">
+        <label asp-for="@Model.Photo">Photo</label>
+        <input  asp-for="@Model.Photo" class="form-control" aria-descriedby="emailHelp" />
         <span class="text-danger" asp-validation-for="@Model.Photo"></span>
     </div>
     <div class="form-group">
         <label for="exampleInputEmail1">Name</label>
-        <input asp-for="@Model.Name" class="form-control" aria-describedby="emailHelp">
+        <input asp-for="@Model.Name" class="form-control" multiple>
         <span class="text-danger" asp-validation-for="@Model.Name"></span>
     </div>
     <div class="form-group">
@@ -24,6 +24,11 @@
         <span class="text-danger" asp-validation-for="@Model.ProductDetails.Price"></span>
     </div>
     <div class="form-group">
+        <label for="exampleInputEmail1">Year</label>
+        <input asp-for="@Model.Year" class="form-control" aria-describedby="emailHelp">
+        <span class="text-danger" asp-validation-for="@Model.Year"></span>
+    </div>
+    <div class="form-group">
         <label for="exampleInputEmail1">Count</label>
         <input asp-for="@Model.ProductDetails.Count" class="form-control" aria-describedby="emailHelp">
         <span class="text-danger" asp-validation-for="@Model.ProductDetails.Count"></span>
@@ -33,6 +38,16 @@
             @foreach ( Category item in ViewBag.Catigories)
             {
                 <option value="@item.Id">@item.Name</option>
+            }
+
+        </select>
+
+    </div>
+     <div class="form-group ">
+     <select class="form-control" name="MarkaId">
+            @foreach (Marka item in ViewBag.Marka)
+            {
+                    <option value="@item.Id">@item.Name</option>
             }
 
         </select>
