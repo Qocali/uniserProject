@@ -2,10 +2,11 @@
 <!-- Banner Area Start -->
 <!-- Main navigation container -->
 @{
-     string a = "";
-
+    string a = "";
+  
 }
-<div class="banner-area-wrapper mt-10">
+<div id="res">
+<div  class="banner-area-wrapper mt-10">
     <div class="banner-area text-center">
         <div class="container">
             <div class="row">
@@ -60,7 +61,8 @@
         <select style="!important margin-bottom:40px;!important margin-top:30px;" id="category" class="form-control" name="CatId">
             @foreach ( Category item in ViewBag.Catigories)
             {
-                <option value="@item.Id">@item.Name</option>
+                                  
+                                    <option value="@item.Id">@item.Name</option>
             }
 
         </select>
@@ -76,9 +78,10 @@
                             
                             <select style="!important margin-bottom:40px;!important margin-top:30px;" id="marka" class="form-control" name="CatId">
                                 @foreach (Marka item in ViewBag.Marka)
-                                {
-                                    <option value="@item.Id">@item.Name</option>
-                                }
+                                    {
+                                                <option value="@item.Id">@item.Name</option>
+
+                                    }
 
                             </select>
                             
@@ -133,6 +136,7 @@
                 <div class="row" id="MyProducts">
                     @foreach (Product product in Model)
                     {
+ 
                         <div class="col-md-3 col-sm-4 col-xs-12">
                             <div class="single-teacher mb-45">
                                 <div class="single-teacher-img">
@@ -193,3 +197,4 @@
     </div>
 </div>
 <!-- Product End -->
+</div>

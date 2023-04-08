@@ -17,6 +17,11 @@
         <input asp-for="@Model.SubName" class="form-control" aria-describedby="emailHelp">
         <span class="text-danger" asp-validation-for="@Model.SubName"></span>
     </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">Details</label>
+        <input asp-for="@Model.ProductDetails.Detail" class="form-control" aria-describedby="emailHelp">
+        <span class="text-danger" asp-validation-for="@Model.ProductDetails.Detail"></span>
+    </div>
 
     <div class="form-group">
         <label for="exampleInputEmail1">Price</label>

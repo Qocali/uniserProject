@@ -18,6 +18,7 @@ namespace uniserProject.Controllers
     public class HomeController : Controller
     {
         private readonly AppDbContext _db;
+
         private readonly IWebHostEnvironment _env;
         private int id;
 
@@ -31,7 +32,7 @@ namespace uniserProject.Controllers
         {
             ViewBag.Year = await _db.Products.Select(x => x.Year).Distinct().ToListAsync(); ;
             ViewBag.Marka = await _db.Marka.ToListAsync();
-            ViewBag.Catigories = await _db.Categories.ToListAsync();
+            ViewBag.Catigories = await _db.Category.ToListAsync();
             ViewBag.Page = page;
             ViewBag.Pagecount = Math.Ceiling((decimal)_db.Products.Count() /10);
             List<Product> products = await _db.Products.Include(x=>x.Category).Include(x=>x.Images).OrderByDescending(x => x.Id).Skip((page - 1) * 10).Take(10).ToListAsync();
@@ -43,7 +44,7 @@ namespace uniserProject.Controllers
         public async Task<IActionResult> Create()
         {
             ViewBag.Marka = await _db.Marka.ToListAsync();
-            ViewBag.Catigories = await _db.Categories.ToListAsync();
+            ViewBag.Catigories = await _db.Category.ToListAsync();
             return View();
         }
         [HttpPost]
@@ -51,7 +52,7 @@ namespace uniserProject.Controllers
         public async Task<IActionResult> Create(int? CatId,Product product)
         {
             ViewBag.Marka= await _db.Marka.ToListAsync();
-            ViewBag.Catigories = await _db.Categories.ToListAsync();
+            ViewBag.Catigories = await _db.Category.ToListAsync();
             List<ProductImage> productImages = new List<ProductImage>();
             foreach (var Photo in product.Photo)
             {
@@ -92,6 +93,7 @@ namespace uniserProject.Controllers
                 return View();
             }
             var productdetail = new ProductDetails();
+            productdetail.Detail = product.ProductDetails.Detail;
             productdetail.ProductId = product.Id;
             productdetail.Price = product.ProductDetails.Price;
             productdetail.Count = product.ProductDetails.Count;
@@ -126,8 +128,17 @@ namespace uniserProject.Controllers
         }
         public async Task<IActionResult> FilterforCategory(int? category)
         {
-
-            List<Product> products = await _db.Products.Where(x => x.CategoryId==category).Include(x => x.Images).ToListAsync();
+            ViewBag.cat=category;
+            ViewBag.Year = await _db.Products.Select(x => x.Year).Distinct().ToListAsync(); ;
+            var cat =  _db.Category.Include(x=>x.Marka).FirstOrDefault(x=>x.Id==category);
+            ViewBag.Catigories = await _db.Category.ToListAsync();
+            List<Product> products = await _db.Products.Where(x => x.CategoryId == category).Include(x => x.Images).ToListAsync();
+            var Mark = new List<Marka>();
+            foreach(var marka in cat.Marka){
+               var mark= _db.Marka.FirstOrDefault(x => x.Id == marka.Id);
+                Mark.Add(mark);
+            }
+            ViewBag.Marka = Mark;
             if (category == null)
             {
                 List<Product> product1 = await _db.Products.OrderByDescending(x => x.Id).Include(x => x.Images).Take(10).ToListAsync();
@@ -135,6 +146,7 @@ namespace uniserProject.Controllers
             }
             return PartialView("_CategoryPartial", products);
         }
+
 
     }
    

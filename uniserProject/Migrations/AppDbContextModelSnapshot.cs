@@ -31,7 +31,7 @@ namespace uniserProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("uniserProject.Models.Marka", b =>
@@ -41,10 +41,18 @@ namespace uniserProject.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CatId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Marka");
                 });
@@ -93,6 +101,9 @@ namespace uniserProject.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
+                    b.Property<string>("Detail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeactive")
                         .HasColumnType("bit");
 
@@ -128,6 +139,15 @@ namespace uniserProject.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("uniserProject.Models.Marka", b =>
+                {
+                    b.HasOne("uniserProject.Models.Category", "Category")
+                        .WithMany("Marka")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("uniserProject.Models.Product", b =>
@@ -173,6 +193,8 @@ namespace uniserProject.Migrations
 
             modelBuilder.Entity("uniserProject.Models.Category", b =>
                 {
+                    b.Navigation("Marka");
+
                     b.Navigation("Products");
                 });
 

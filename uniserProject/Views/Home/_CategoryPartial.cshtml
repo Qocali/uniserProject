@@ -1,27 +1,204 @@
 ﻿@model List<Product>
-@foreach (Product product in Model)
-{
-    <div class="col-md-3 col-sm-4 col-xs-12">
-        <div class="single-teacher mb-45">
-            <div class="single-teacher-img">
-                @foreach(ProductImage image in product.Images){
-                <a asp-route-id="@product.Id" asp-controller="Home" asp-action="Detail"><img src="~/img/product/@image.ImageName" alt="teacher" style="width: 360px !important;height: 250px !important; "></a>
-                break;
+@{
+    string a = "";
+
 }
-            </div>
-            <div class="single-teacher-content text-center">
-                <h2><a asp-controller="Teacher" asp-action="Detail" asp-route-id="@product.Id">@product.Name</a></h2>
-                <h4>@product.SubName</h4>
-                <ul>
-
-                    <li><a href="#"><i class="zmdi zmdi-facebook"></i></a></li>
-                    <li><a href="#"><i class="zmdi zmdi-pinterest"></i></a></li>
-                    <li><a href="#"><i class="zmdi zmdi-vimeo"></i></a></li>
-                    <li><a href="#"><i class="zmdi zmdi-twitter"></i></a></li>
-
-                </ul>
+<div class="banner-area-wrapper mt-10">
+    <div class="banner-area text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="banner-content-wrapper">
+                        <div class="banner-content">
+                            <h2>Bizim Mehsullar</h2>
+                            <img src="img/logo.jpg" alt="title">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
+<!-- Banner Area End -->
+<!-- product Start -->
+<div class="teacher-area pb-50">
+    <div class="container">
+        <div class="row">
 
-}
+
+            <div class="col-xs-12">
+                <div class="section-title text-center">
+                    <h2>Mehsullarmizla tanis olun</h2>
+                    <a asp-controller="Home" asp-action="Create"
+                       data-te-ripple-init
+                       data-te-ripple-color="light"
+                       class="flex items-center rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 24 24"
+                             fill="currentColor"
+                             class="mr-1 h-4 w-4">
+                            <path fill-rule="evenodd"
+                                  d="M19.5 21a3 3 0 003-3V9a3 3 0 00-3-3h-5.379a.75.75 0 01-.53-.22L11.47 3.66A2.25 2.25 0 009.879 3H4.5a3 3 0 00-3 3v12a3 3 0 003 3h15zm-6.75-10.5a.75.75 0 00-1.5 0v4.19l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V10.5z"
+                                  clip-rule="evenodd" />
+                        </svg>
+                        Yeni Mehsul Yarat
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="teacher-area pt-150 pb-105">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="course-title">
+                            <h3>istediyniz mehsulu Modelne gore</h3>
+                        </div>
+                        <div class="form-group ">
+                            <select style="!important margin-bottom:40px;!important margin-top:30px;" id="category" class="form-control" name="CatId">
+                                @foreach (Category item in ViewBag.Catigories)
+                                {
+                                    if (item.Id == ViewBag.cat)
+                                        {
+                                            <option selected value="@item.Id">@item.Name</option>
+                                           }
+                                         else{
+                                        <option  value="@item.Id">@item.Name</option>
+                                         } 
+                                    
+                                }
+
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="course-title">
+                            <h3>Mehsulu Markaya Gore axtarin</h3>
+                        </div>
+                        <div class="form-group ">
+
+                            <select style="!important margin-bottom:40px;!important margin-top:30px;" id="marka" class="form-control" name="CatId">
+                               @foreach (Marka item in ViewBag.Marka)
+                                    {
+                               
+                                                <option value="@item.Id">@item.Name</option>
+
+                                    }
+
+                            </select>
+
+                        </div>
+
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="course-title">
+                            <h3>istediyniz mehsulu Iline gore axtarin</h3>
+                        </div>
+                        <div class="form-group ">
+
+                            <select style="!important margin-bottom:40px;!important margin-top:30px;" id="year" class="form-control" name="year">
+                                @foreach (var item in ViewBag.Year)
+                                {
+
+                                    if (a.Contains(item.ToString("yyyy")))
+                                    {
+                                        continue;
+                                    }
+
+                                    <option value="@item.ToString("yyyy")">@item.ToString("yyyy")</option>
+                                    a += @item.ToString("yyyy");
+                                }
+
+                            </select>
+                        </div>
+
+                        <form method="post" id="getData">
+                            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                <div>
+                                    <label for="MinValue" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Minimum qiymet</label>
+                                    <input type="text" id="minvalue" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Min" required>
+                                </div>
+                                <div>
+                                    <label for="MaxValue" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Maxmum qiymet</label>
+                                    <input type="text" id="Maxvalue" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Max" required>
+                                </div>
+
+
+                                <button type="button" id="button" class="btn btn-success">Tap</button>
+                        </form>
+
+                        <div class="course-form">
+                            <form>
+                                <input id="productsearch" type="text" placeholder="Search..." />
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" id="MyProducts">
+                    @foreach (Product product in Model)
+                    {
+
+                        <div class="col-md-3 col-sm-4 col-xs-12">
+                            <div class="single-teacher mb-45">
+                                <div class="single-teacher-img">
+                                    <a asp-route-id="@product.Id" asp-controller="Home" asp-action="Detail">
+                                        @foreach (ProductImage image in product.Images)
+                                        {
+                                            <img src="~/img/product/@image.ImageName" alt="teacher" style="width: 360px !important;height: 250px !important; ">
+                                            break;
+                                        }
+                                    </a>
+                                </div>
+                                <div class="single-teacher-content text-center">
+                                    <h2><a href="#">@product.Name</a></h2>
+                                    <h2><a href="#">@product.Category.Name</a></h2>
+                                    <h4>@product.SubName</h4>
+                                    <ul>
+                                        <li><a href="#"><i class="fa-brands fa-square-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-pinterest"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-square-instagram"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-linkedin"></i></a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <div class="row" id="pagination">
+                    <div class="col-xs-12">
+                        <div class="pagination">
+                            <ul>
+                                @for (int i = 1; i <= ViewBag.Pagecount; i++)
+                                {
+                                    if (ViewBag.Page == i)
+                                    {
+                                        <li style="z-index:3;color:#fff;background-color:#007bff;border-color:#007bff;" class="page-item active disabled">
+                                            <a class="page-link">@i</a>
+                                        </li>
+                                    }
+
+                                    else
+                                    {
+                                        <li class="page-item ">
+                                            <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-page="@i">@i</a>
+                                        </li>
+
+                                    }
+
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- Product End -->

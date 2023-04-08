@@ -40,12 +40,12 @@ $(document).ready(function () {
             success: function (response) {
                 if ($("#category").val().length > 0) {
 
-                    $("#MyProducts div").slice().remove()
-                    $("#MyProducts").append(response)
+                    $("#res").empty()
+                    $("#res").append(response)
                 }
                 else {
-                    $("#MyProducts").empty(),
-                        $("#MyProducts").append(response)
+                    $("#res").empty()
+                        $("#res").append(response)
                 };
 
 
