@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookProject.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using uniserProject.Models;
+using BookProject.Models;
 
-namespace uniserProject.DAL
+namespace BookProject.DAL
 {
     public class AppDbContext :DbContext
     {
@@ -10,10 +11,10 @@ namespace uniserProject.DAL
         {
 
         }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Marka> Marka { get; set; }
-        public DbSet<ProductImage> ProductImages { get; set; }
-        public DbSet<Category> Category { get; set; }
-        public DbSet<ProductDetails> ProductDetails { get; set; }
+        public DbSet<Store> Stores { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Sale> Sales { get; set; }
+       
     }
 }

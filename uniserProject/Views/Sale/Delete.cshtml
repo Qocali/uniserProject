@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Sale
+
+<div>
+    <h4>Satışı Sil</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Satış Kodu
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Book.Code)
+        </dd>
+        <dt>
+            Tarih
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt>
+            Mağaza
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Store.Name)
+        </dd>
+        <dt>
+            Kitap
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Book.Name)
+        </dd>
+        <dt>
+            Alıcı
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+        <dt>
+            Satış Fiyatı
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            Durumu
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Sale", new { id = Model.Id }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <button type="submit" class="btn btn-danger">Satışı Sil</button>
+    }
+</div>
+

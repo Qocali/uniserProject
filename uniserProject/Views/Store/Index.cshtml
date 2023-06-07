@@ -1,0 +1,34 @@
+﻿@model List<Store>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Store List</h2>
+<a href="@Url.Action("Create", "Store")" class="btn btn-primary">Create</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var store in Model)
+        {
+            <tr>
+                <td>@store.Name</td>
+                <td>@store.Address</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Store", new { id=store.Id})" class="btn btn-info">Edit</a>
+                    <a href="@Url.Action("Delete", "Store",new { id=store.Id})" class="btn btn-danger">Delete</a>
+                    </td>
+
+            </tr>
+        }
+    </tbody>
+  
+</table>
+

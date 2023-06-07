@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<Customer>
+
+<h2>Customers</h2>
+
+<p>
+    <a href="@Url.Action("Create", "Customer")" class="btn btn-primary">Create</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Phone Number</th>
+        <th></th>
+    </tr>
+    @foreach (var customer in Model)
+    {
+        <tr>
+            <td>@customer.Name</td>
+            <td>@customer.PhoneNumber</td>
+            <td>
+                <a href="@Url.Action( "Edit","Customer", new { id = customer.Id })" class="btn btn-info">Edit</a>
+                <a href="@Url.Action( "Delete","Customer", new { id = customer.Id })" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

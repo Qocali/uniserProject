@@ -1,0 +1,22 @@
+﻿@model Store
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete Store</h2>
+
+<div class="alert alert-danger">
+    <p>Are you sure you want to delete the store "<strong>@Model.Name</strong>"?</p>
+    <p>This action cannot be undone.</p>
+</div>
+
+@using (Html.BeginForm("DeleteConfirm", "Store", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.Id)
+
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="@Url.Action("Index", "Store")" class="btn btn-default">Cancel</a>
+}
+

@@ -1,0 +1,29 @@
+﻿@model Store
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Store</h2>
+
+@using (Html.BeginForm("Edit", "Store", FormMethod.Post, new { @class = "form" }))
+{
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Address)
+        @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Address)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+}

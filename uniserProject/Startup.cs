@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Task.Rest.Api.Middlewares;
-using uniserProject.DAL;
+using BookProject.DAL;
 
-namespace uniserProject
+namespace BookProject
 {
     public class Startup
     {
@@ -47,7 +47,7 @@ namespace uniserProject
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseMiddleware<ExceptionMiddleware>();
+            //app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -59,7 +59,7 @@ namespace uniserProject
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Store}/{action=Index}/{id?}");
             });
         }
     }

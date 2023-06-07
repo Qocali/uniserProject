@@ -1,0 +1,41 @@
+﻿@model List<Sale>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Sale List</h2>
+<a href="@Url.Action("Create", "Sale")" class="btn btn-primary">Create</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Satış Kodu</th>
+            <th>Tarix</th>
+            <th>Mağaza</th>
+            <th>Kitab</th>
+            <th>Alıcı</th>
+            <th>Satış Qiyməti</th>
+            <th>Statusu</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sale in Model)
+        {
+            <tr>
+                <td>@sale.Book.Code</td>
+                <td>@sale.Date</td>
+                <td>@sale.Store.Name</td>
+                <td>@sale.Book.Name</td>
+                <td>@sale.Customer.Name</td>
+                <td>@sale.Price</td>
+                <td>@sale.Status</td>
+               
+                <td>
+                    <a href="@Url.Action("Edit", "Sale", new { id=sale.Id})" class="btn btn-info">Edit</a>
+                    <a href="@Url.Action("Delete", "Sale",new { id=sale.Id})" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
